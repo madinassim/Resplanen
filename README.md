@@ -30,3 +30,20 @@ Jag har också testat statistiken och att scrolla i listan med flera aktiviteter
 Jag har använt ChatGPT som stöd under arbetet. 
 Jag har fått hjälp att förstå Kotlin-kod, hitta fel och få förklaringar steg för steg. 
 Jag har testat koden själv i Android Studio och försökt förstå hur de olika delarna fungerar.
+
+## Problem och lösning
+
+Under arbetet fick jag ett problem när jag
+försökte redigera en aktivitet. Appen kraschade
+och Logcat visade IndexOutOfBoundsException.
+
+Problemet berodde på att koden försökte använda
+ett index som inte längre fanns i listan.
+
+Jag löste problemet genom att kontrollera att
+indexet fortfarande finns i listan innan
+aktiviteten ändras.
+
+Efter ändringen testade jag appen igen.
+Då kunde jag redigera aktiviteter utan
+att appen kraschade.
