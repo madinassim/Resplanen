@@ -115,6 +115,20 @@ fun Greeting(
     var redigerarIndex by remember { mutableStateOf<Int?>(null) }
 
     val aktiviteter = resplanViewModel.aktiviteter
+    var sokText by remember { mutableStateOf("") }
+    // VG - Sortering
+    var sorteraAlfabetiskt by remember { mutableStateOf(false) }
+    // VG - Filtrera aktiviteter efter namn eller plats
+    val filtreradeAktiviteter = aktiviteter.filter { item ->
+        item.namn.contains(sokText, ignoreCase = true) ||
+                item.plats.contains(sokText, ignoreCase = true)
+    }
+    // VG - Sortera aktiviteter efter namn
+    val visadeAktiviteter = if (sorteraAlfabetiskt) {
+        filtreradeAktiviteter.sortedBy { it.namn.lowercase() }
+    } else {
+        filtreradeAktiviteter
+    }
 
 
     Column(
@@ -123,6 +137,28 @@ fun Greeting(
         verticalArrangement = Arrangement.Center
     ) {
         val antalKlara = aktiviteter.count { it.arKlar }
+        // VG - Sökfält
+        OutlinedTextField(
+            value = sokText,
+            onValueChange = { sokText = it },
+            label = { Text("Sök aktivitet eller plats") },
+            singleLine = true
+        )
+
+
+// VG - Knapp för alfabetisk sortering
+        Button(
+            onClick = {
+                sorteraAlfabetiskt = !sorteraAlfabetiskt
+            }
+        ) {
+            Text(
+                if (sorteraAlfabetiskt) "Visa vanlig ordning"
+                else "Sortera A-Ö"
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = "$antalKlara av ${aktiviteter.size} aktiviteter klara"
@@ -183,7 +219,10 @@ fun Greeting(
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn {
-            itemsIndexed(aktiviteter) { index, item ->
+            itemsIndexed(
+                visadeAktiviteter,
+                key = { _, item -> item.id }
+                ) { index, item ->
 
             Checkbox(
                 checked = item.arKlar,
@@ -195,13 +234,15 @@ fun Greeting(
             Text(text = "✈️ ${item.namn}")
             Text(text = "📍 ${item.plats}")
 
-            Button(
-                onClick = {
-                    aktivitet = item.namn
-                    plats = item.plats
-                    redigerarIndex = index
+                Button(
+                    onClick = {
+                aktivitet = item.namn
+                plats = item.plats
+                redigerarIndex = aktiviteter.indexOfFirst {
+                it.id == item.id
+                }.takeIf { it >= 0 }
                 }
-            ) {
+                ) {
                 Text("Ändra")
             }
 

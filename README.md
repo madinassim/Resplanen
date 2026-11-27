@@ -47,3 +47,16 @@ aktiviteten ändras.
 Efter ändringen testade jag appen igen.
 Då kunde jag redigera aktiviteter utan
 att appen kraschade.
+
+## Så använder man appen
+
+1. Skriv namnet på en aktivitet.
+2. Ange platsen där aktiviteten ska göras.
+3. Klicka på "Lägg till aktivitet".
+4. Markera checkboxen när aktiviteten är klar.
+5. Klicka på "Ändra" för att redigera en aktivitet.
+6. Klicka på "Ta bort" för att radera en aktivitet.
+
+Appen visar hur många aktiviteter som är klara.
+Om det finns många aktiviteter kan man scrolla
+upp och ner i listan.
