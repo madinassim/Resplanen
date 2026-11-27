@@ -14,6 +14,9 @@ vad man vill göra och var.
 - Visa ett meddelande när listan är tom.
 - Scrolla genom listan när det finns många aktiviteter.
 - Förhindra att tomma aktiviteter sparas.
+- Söka aktiviteter efter namn eller plats.
+- Sortera aktiviteter alfabetiskt A–Ö.
+- Återgå till vanlig ordning.
 
 ## Teknik
 Jag har använt Kotlin, Android Studio och Jetpack Compose med Material 3.
@@ -21,10 +24,18 @@ Jag har använt Kotlin, Android Studio och Jetpack Compose med Material 3.
 Jag har en data class som heter ResAktivitet med egenskaperna id, namn, plats och arKlar.
 Jag använder en ViewModel för att hantera listan och ändringarna. 
 Jag använder LazyColumn för att visa aktiviteterna i en rullande lista.
+Jag använder ResplanUiState för att samla
+aktivitetslistan, söktexten och sorteringen.
+
+ViewModel hanterar tillståndet och
+uppdaterar gränssnittet när något ändras.
 
 ## Testning
 Jag har testat att lägga till, ändra, ta bort och markera aktiviteter. 
 Jag har också testat statistiken och att scrolla i listan med flera aktiviteter.
+Jag har även testat sökfunktionen,
+alfabetisk sortering och redigering
+av aktiviteter när listan är sorterad.
 
 ## AI-reflektion
 Jag har använt ChatGPT som stöd under arbetet. 
