@@ -42,8 +42,27 @@ data class ResAktivitet(
     val plats: String,
     val arKlar: Boolean = false
 )
+
+// VG - Samlar skärmens tillstånd
+data class ResplanUiState(
+    val aktiviteter: List<ResAktivitet> = emptyList(),
+    val sokText: String = "",
+    val sorteraAlfabetiskt: Boolean = false
+)
+
 class ResplanViewModel : ViewModel() {
     val aktiviteter = mutableStateListOf<ResAktivitet>()
+    var sokText by mutableStateOf("")
+
+    var sorteraAlfabetiskt by mutableStateOf(false)
+    // VG - Skärmens tillstånd
+    val uiState: ResplanUiState
+        get() = ResplanUiState(
+            aktiviteter = aktiviteter.toList(),
+            sokText = sokText,
+            sorteraAlfabetiskt = sorteraAlfabetiskt
+        )
+
     fun laggTill(namn: String, plats: String) { if (namn.isBlank() || plats.isBlank()) return
         val nyttId = (aktiviteter.maxOfOrNull { it.id } ?: 0) + 1
 
@@ -114,10 +133,13 @@ fun Greeting(
     var plats by remember { mutableStateOf("") }
     var redigerarIndex by remember { mutableStateOf<Int?>(null) }
 
-    val aktiviteter = resplanViewModel.aktiviteter
-    var sokText by remember { mutableStateOf("") }
-    // VG - Sortering
-    var sorteraAlfabetiskt by remember { mutableStateOf(false) }
+    val uiState = resplanViewModel.uiState
+    val aktiviteter = uiState.aktiviteter
+
+    val sokText = uiState.sokText
+
+    val sorteraAlfabetiskt = uiState.sorteraAlfabetiskt
+
     // VG - Filtrera aktiviteter efter namn eller plats
     val filtreradeAktiviteter = aktiviteter.filter { item ->
         item.namn.contains(sokText, ignoreCase = true) ||
@@ -140,7 +162,7 @@ fun Greeting(
         // VG - Sökfält
         OutlinedTextField(
             value = sokText,
-            onValueChange = { sokText = it },
+            onValueChange = { resplanViewModel.sokText = it },
             label = { Text("Sök aktivitet eller plats") },
             singleLine = true
         )
@@ -149,7 +171,7 @@ fun Greeting(
 // VG - Knapp för alfabetisk sortering
         Button(
             onClick = {
-                sorteraAlfabetiskt = !sorteraAlfabetiskt
+                resplanViewModel.sorteraAlfabetiskt = !resplanViewModel.sorteraAlfabetiskt
             }
         ) {
             Text(
